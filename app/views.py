@@ -1,20 +1,33 @@
-import os, shutil, time, json
-from django.contrib import messages
+import os
+import io
+import time
+import json
+import shutil
 from pathlib import Path
+
 import pandas as pd
+import matplotlib
+matplotlib.use("Agg")   # backend no interactivo, ideal para Django
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import KMeans
+
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
-# Carpetas principales
+# --- Rutas principales ---
 INPUT = Path("input")
 CHUNKS = Path("data/chunks")
 OUTPUT = Path("output")
 DATA = Path("data")
+STATIC_G = Path("app/static/graficos")
+
 CHUNK_SIZE = 10  # número de filas por chunk
 
 # Crear carpetas si no existen
-for p in [INPUT, CHUNKS, OUTPUT, DATA]:
+for p in [INPUT, CHUNKS, OUTPUT, DATA, STATIC_G]:
     p.mkdir(parents=True, exist_ok=True)
 
 
@@ -26,19 +39,12 @@ def index(request):
             for line in fh:
                 try:
                     data = json.loads(line)
-                    # guardamos el nombre del archivo como "origen"
-                    data["origen"] = f.stem  
+                    data["origen"] = f.stem  # guardamos el nombre del archivo como "origen"
                     resultados.append(data)
                 except:
                     pass
     return render(request, "app/index.html", {"resultados": resultados})
 
-
-# PRUEBA DOS
-from django.contrib import messages
-from django.views.decorators.csrf import csrf_exempt
-import pandas as pd
-from pathlib import Path
 
 @csrf_exempt
 def upload_csv(request):
@@ -63,7 +69,6 @@ def upload_csv(request):
         total_chunks = (len(df) // CHUNK_SIZE) + (1 if len(df) % CHUNK_SIZE else 0)
         print(f"✅ CSV {file.name} dividido en {total_chunks} chunks con tag {tag}")
 
-        # Mostrar mensaje en la interfaz
         messages.success(request, f"✅ Archivo {file.name} subido y dividido en {total_chunks} chunks.")
         return redirect("index")
 
@@ -71,7 +76,17 @@ def upload_csv(request):
     return redirect("index")
 
 
+# def generar_lote(request):
+#     """Mover un chunk al input para que Spark lo procese"""
+#     files = list(CHUNKS.glob("*.csv"))
+#     if not files:
+#         return JsonResponse({"error": "No hay chunks en data/chunks"})
 
+#     src = files[int(time.time()) % len(files)]
+#     dst = INPUT / f"batch_{int(time.time()*1000)}.csv"
+#     shutil.copy(src, dst)
+#     print(f"📥 Lote generado desde {src.name}")
+#     return redirect("index")
 
 def generar_lote(request):
     """Mover un chunk al input para que Spark lo procese"""
@@ -81,32 +96,19 @@ def generar_lote(request):
 
     src = files[int(time.time()) % len(files)]
     dst = INPUT / f"batch_{int(time.time()*1000)}.csv"
-    shutil.copy(src, dst)
-    print(f"📥 Lote generado desde {src.name}")
+
+    # 🔑 Mover de manera atómica (Spark ve el archivo solo cuando ya está completo)
+    os.replace(src, dst)
+
+    print(f"📥 Lote generado: {src.name} -> {dst.name}")
     return redirect("index")
 
-
-
-
-import os, io, json
-from pathlib import Path
-import pandas as pd
-import matplotlib
-matplotlib.use("Agg")   # 👈 backend no interactivo, ideal para Django
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.cluster import KMeans
-from django.shortcuts import render
-
-OUTPUT = Path("output")
-STATIC_G = Path("app/static/graficos")  # carpeta para guardar los plots
-STATIC_G.mkdir(parents=True, exist_ok=True)
 
 def graficos(request):
     # Leer resultados de output
     files = sorted(OUTPUT.glob("*.json"), key=os.path.getmtime, reverse=True)
     data = []
-    for f in files[:5]:   # puedes aumentar el rango si quieres más datos
+    for f in files[:5]:
         with open(f) as fh:
             for line in fh:
                 try:
@@ -119,7 +121,6 @@ def graficos(request):
 
     # Convertir a DataFrame
     df = pd.DataFrame(data)
-
     plots = []
 
     # ---- 1. Matriz de correlación ----
@@ -134,7 +135,7 @@ def graficos(request):
     # ---- 2. Clustering con KMeans ----
     if {"sepal_length", "sepal_width"} <= set(df.columns):
         X = df[["sepal_length", "sepal_width"]].dropna()
-        if len(X) > 2:  # al menos algunos puntos
+        if len(X) > 2:
             kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
             clusters = kmeans.labels_
 
@@ -147,7 +148,5 @@ def graficos(request):
             plt.savefig(kmeans_path, bbox_inches="tight")
             plt.close()
             plots.append("graficos/kmeans.png")
-
-    print(plots)
 
     return render(request, "app/graficos.html", {"plots": plots})
