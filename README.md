@@ -20,30 +20,6 @@ Proyecto que utiliza **PySpark** para procesar datos y entrenar un modelo, integ
    ```bash
    pip install -r requirements.txt
 
-## Mandar CSV a /data
-Pasar un archivo sample_full.csv a la carpeta /data
-
-## Ejecutar el train_model.py
-Para ejecutar el archivo train_model.py es necesario tener el archivo sample_full.csv en la carpeta /data, ya que con eso se va a entrenar y crear el modelo Spark ML
-
-# Crear carpetas
-Crear las carpetas input y output en la raiz del proyecto
-
-## Ejecutar el stream_processor.py
-Ahora con el modelo Spark ML recien se puede ejecutar stream_processor.py
-
-## Ejecutar django
-El archivo stream_processor.py va estar a la escucha, así que en otra terminal ejecutar django con 'python manage.py runserver'.
-Ojo, no hay que cancelar la terminal en la que esta corriendo 'stream_processor.py'
-
-# Pruebas
-En la pagina que se genero, hacer la prueba subiendo un CSV y poniendo en generar lote
-
-
--------------------------------------------------------------------------
-
-
-
 # 📂 Preparación del proyecto
 
 Copiar el archivo sample_full.csv dentro de la carpeta data/.
@@ -70,10 +46,9 @@ project_root/
 ├── train_model.py
 ├── stream_processor.py
 └── manage.py
+```
 
-
-
-⚙️ Ejecución
+# ⚙️ Ejecución
 1. Entrenar el modelo
 
 Ejecuta el siguiente comando:
