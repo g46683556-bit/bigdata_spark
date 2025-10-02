@@ -1,1 +1,5 @@
 venv
+
+/model/logreg_model/metadata
+/model/logreg_model/stages
+/checkpoint

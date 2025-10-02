@@ -37,7 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'app',
 ]
+
+STATIC_URL = '/static/'   # URL para acceder a los archivos estáticos
+STATICFILES_DIRS = [BASE_DIR / "static"]  # Carpeta donde guardarás tus archivos
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +59,7 @@ ROOT_URLCONF = 'zevidencia3.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
