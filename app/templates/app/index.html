@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Evidencia 3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Evidencia3</a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="/graficos/">Gráficos</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <br>
+
+    {% if messages %}
+      <div class="container mt-3">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Subir nuevo CSV -->
+    <div class="mb-4">
+        <h4>Subir un nuevo CSV</h4>
+        <form action="{% url 'upload_csv' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="file" accept=".csv" required class="form-control mb-2">
+            <button type="submit" class="btn btn-primary">Subir CSV</button>
+        </form>
+    </div>
+
+    <!-- Botón generar lote -->
+    <div class="mb-4">
+        <a href="{% url 'generar' %}" class="btn btn-success">Generar Lote</a>
+    </div>
+
+    <!-- Tabla resultados -->
+    <h4>Últimos resultados</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Fuente</th>
+                <th>Predicción</th>
+                <th>Probabilidad</th>
+                <th>Datos originales</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in resultados %}
+            <tr>
+                <td>
+                  <span class="badge
+                    {% if "iris" in r.origen %} bg-primary
+                    {% elif "test1" in r.origen %} bg-success
+                    {% else %} bg-secondary {% endif %}">
+                    {{ r.origen }}
+                  </span>
+                </td>
+
+                <td>{{ r.prediction }}</td>
+                <td>{{ r.probability }}</td>
+                <td>
+                    {% for k,v in r.items %}
+                        {% if k not in "_source prediction probability" %}
+                            <b>{{k}}</b>: {{v}}<br>
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">⚠️ No hay resultados todavía</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
