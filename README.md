@@ -20,7 +20,6 @@ Proyecto que utiliza **PySpark** para procesar datos y entrenar un modelo, integ
    ```bash
    pip install -r requirements.txt
 
-
 ## Mandar CSV a /data
 Pasar un archivo sample_full.csv a la carpeta /data
 
