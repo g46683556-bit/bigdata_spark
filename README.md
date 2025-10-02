@@ -14,14 +14,18 @@ dentro poner la carpeta bin descomprimida
 
 instalar el requirements.txt
 
-# Mandar CSV a /data
+## Mandar CSV a /data
 Pasar un archivo sample_full.csv a la carpeta /data
 
-# Ejecutar el train_model.py
+## Ejecutar el train_model.py
 Para ejecutar el archivo train_model.py es necesario tener el archivo sample_full.csv en la carpeta /data, ya que con eso se va a entrenar y crear el modelo Spark ML
 
-# Ejecutar el stream_processor.py
+## Ejecutar el stream_processor.py
 Ahora con el modelo Spark ML recien se puede ejecutar stream_processor.py
 
-# Ejecutar django
-El archivo stream_processor.py va estar a la escucha, así que en otra terminal ejecutar django con 'python manage.py runserver'
+## Ejecutar django
+El archivo stream_processor.py va estar a la escucha, así que en otra terminal ejecutar django con 'python manage.py runserver'.
+Ojo, no hay que cancelar la terminal en la que esta corriendo 'stream_processor.py'
+
+# Pruebas
+En la pagina que se genero, hacer la prueba subiendo un CSV y poniendo en generar lote
