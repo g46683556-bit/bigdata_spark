@@ -71,25 +71,17 @@ project_root/
    ```
    ⚠️ No cierres la terminal donde corre stream_processor.py.
 
-🧪 Pruebas
-
+## 🧪 Pruebas
 Accede a la página web generada por Django (por defecto: http://localhost:8000).
-
 Sube un archivo CSV.
-
 Haz clic en "Generar lote" para procesar el archivo con el modelo entrenado.
 
-🧰 Tecnologías utilizadas
-
-Python 3.10+
-
-PySpark
-
-Django
-
-Hadoop
-
-Spark MLlib
+## 🧰 Tecnologías utilizadas
+- Python 3.10+
+- PySpark
+- Django
+- Hadoop
+- Spark MLlib
 
 
 
