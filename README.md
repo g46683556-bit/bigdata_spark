@@ -51,7 +51,7 @@ Copiar el archivo sample_full.csv dentro de la carpeta data/.
 Crear las carpetas input/ y output/ en la raíz del proyecto.
 
 Estructura esperada:
-
+```bash
 project_root/
 ├── app/
 |   ├── static/
@@ -70,6 +70,8 @@ project_root/
 ├── train_model.py
 ├── stream_processor.py
 └── manage.py
+
+
 
 ⚙️ Ejecución
 1. Entrenar el modelo
