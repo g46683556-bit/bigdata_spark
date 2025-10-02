@@ -48,38 +48,32 @@ project_root/
 └── manage.py
 ```
 
-# ⚙️ Ejecución
-1. Entrenar el modelo
+## ⚙️ Ejecución
 
-Ejecuta el siguiente comando:
+1. **Entrenar el modelo**
+   Ejecuta el siguiente comando:
+   ```bash
+   python train_model.py
+   ```
+   Este script entrena el modelo Spark ML utilizando el archivo data/sample_full.csv.
 
-python train_model.py
+2. **Iniciar el procesamiento en streaming**
+   Con el modelo entrenado, ejecuta:
+   ```bash
+   python stream_processor.py
+   ```
+   Mantén esta terminal abierta, ya que este script escucha continuamente los nuevos datos en streaming.
 
-
-Este script entrena el modelo Spark ML utilizando el archivo data/sample_full.csv.
-
-2. Iniciar el procesamiento en streaming
-
-Con el modelo entrenado, ejecuta:
-
-python stream_processor.py
-
-
-Mantén esta terminal abierta, ya que este script escucha continuamente los nuevos datos en streaming.
-
-3. Iniciar el servidor Django
-
-En una nueva terminal, ejecuta:
-
-python manage.py runserver
-
-
-⚠️ No cierres la terminal donde corre stream_processor.py.
+3. **Iniciar el servidor Django**
+   En una nueva terminal, ejecuta:
+   ```bash
+   python manage.py runserver
+   ```
+   ⚠️ No cierres la terminal donde corre stream_processor.py.
 
 🧪 Pruebas
 
-Accede a la página web generada por Django (por defecto: http://localhost:8000
-).
+Accede a la página web generada por Django (por defecto: http://localhost:8000).
 
 Sube un archivo CSV.
 
