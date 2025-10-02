@@ -28,7 +28,7 @@ Crear las carpetas input/ y output/ en la raíz del proyecto.
 
 Estructura esperada:
 ```bash
-project_root/
+bigdata_spark/
 ├── app/
 |   ├── static/
 |   |   └── graficos/
