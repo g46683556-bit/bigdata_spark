@@ -45,7 +45,7 @@ En la pagina que se genero, hacer la prueba subiendo un CSV y poniendo en genera
 
 
 
-📂 Preparación del proyecto
+# 📂 Preparación del proyecto
 
 Copiar el archivo sample_full.csv dentro de la carpeta data/.
 
@@ -54,6 +54,15 @@ Crear las carpetas input/ y output/ en la raíz del proyecto.
 Estructura esperada:
 
 project_root/
+├── app/
+|   ├── static/
+|   |   └── graficos/
+|   ├── templates/
+|   |   └── app/
+|   |       ├── graficos.html
+|   |       └── index.html
+|   ├── urls.py
+|   └── views.py
 │
 ├── data/
 │   └── sample_full.csv
