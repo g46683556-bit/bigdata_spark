@@ -22,3 +22,6 @@ Para ejecutar el archivo train_model.py es necesario tener el archivo sample_ful
 
 # Ejecutar el stream_processor.py
 Ahora con el modelo Spark ML recien se puede ejecutar stream_processor.py
+
+# Ejecutar django
+El archivo stream_processor.py va estar a la escucha, así que en otra terminal ejecutar django con 'python manage.py runserver'
